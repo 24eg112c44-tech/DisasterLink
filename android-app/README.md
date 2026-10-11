@@ -1,0 +1,7 @@
+# Android app
+
+Open this directory with Android Studio; it is a Gradle Android application. Let Studio download the Android Gradle plugin, SDK 35, Room, and WorkManager dependencies. Use an Android 6+ emulator/device.
+
+The SOS flow validates and stores a stable-ID report in Room first, then queues WorkManager sync requiring network connectivity. Retries use the API batch sync endpoint and mark only accepted reports synced. Location is optional; the user can request a location fix or enter a landmark/coordinates manually. The Android emulator connects to a host machine API at `10.0.2.2`; edit `API_URL` in `app/build.gradle.kts` for a physical phone's trusted LAN route.
+
+Nearby transfer is user-initiated Wi-Fi Direct: keep the app open on both devices, grant nearby permission, search on each device, connect, and wait for the recipient acknowledgement. Received SOS IDs are deduplicated in Room; forwarding is capped at three hops and 50 reports per transfer. This first version has not been validated on physical phones; device support and Android versions vary, there is no guaranteed mesh delivery, and there is no app-level end-to-end encryption. Do not expose precise locations to untrusted peers. It is not a certified emergency service. A local save or nearby relay does not notify responders; use official services whenever possible. Cleartext HTTP is enabled for local development only and must be disabled with HTTPS for any deployment.
